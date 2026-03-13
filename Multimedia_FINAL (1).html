@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perjalanan ke Pulau Penyengat</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root {
+    --ocean-deep: #0a3d62;
+    --ocean-mid: #0e4d7b;
+    --ocean-light: #1a7abf;
+    --ocean-foam: #5bb8f5;
+    --sand: #f5e6c8;
+    --gold: #f0b429;
+    --coral: #ff6b6b;
+    --green-island: #2d8a4e;
+    --white: #ffffff;
+    --card-bg: rgba(255,255,255,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(180deg, #87CEEB 0%, #b8e4f9 50%, #d6f0ff 100%);
+    min-height: 100vh;
+    color: #0a3d62;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 0.8rem 1rem 0.5rem;
+    position: relative;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(240,180,41,0.4);
+    line-height: 1.2;
+  }
+  .header p {
+    color: #0a5f9e;
+    font-size: 1rem;
+    margin-top: 0.4rem;
+    font-weight: 600;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--ocean-deep);
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* SOAL CARD */
+  .soal-card {
+    max-width: 700px;
+    margin: 1rem auto;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(41,182,246,0.4);
+    border-radius: 16px;
+    padding: 1.2rem 1.5rem;
+    backdrop-filter: blur(10px);
+  }
+  .soal-card h3 {
+    color: var(--ocean-foam);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .soal-card p {
+    color: #0d3b66;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .soal-card p span {
+    color: var(--gold);
+    font-weight: 800;
+  }
+
+  /* DATA BOX */
+  .data-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    max-width: 700px;
+    margin: 0.8rem auto;
+    padding: 0 1rem;
+  }
+  .data-item {
+    flex: 1;
+    min-width: 140px;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(41,182,246,0.35);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    text-align: center;
+  }
+  .data-item .label {
+    font-size: 0.7rem;
+    color: var(--ocean-foam);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.3rem;
+  }
+  .data-item .value {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--gold);
+  }
+  .data-item .unit {
+    font-size: 0.7rem;
+    color: #8ecde8;
+  }
+
+  /* OCEAN SCENE */
+  .ocean-scene {
+    max-width: 750px;
+    margin: 1rem auto;
+    padding: 0 1rem;
+    position: relative;
+    height: 220px;
+  }
+
+  .scene-svg {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    overflow: visible;
+  }
+
+  /* STEPS */
+  .steps-section {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 1rem 1rem;
+  }
+  .steps-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .step-card {
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(41,182,246,0.3);
+    border-radius: 14px;
+    padding: 1rem 1.3rem;
+    margin-bottom: 0.8rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .step-card.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .step-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    border-radius: 4px 0 0 4px;
+  }
+  .step-card.s1::before { background: var(--ocean-foam); }
+  .step-card.s2::before { background: var(--gold); }
+  .step-card.s3::before { background: #7ed56f; }
+
+  .step-num {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .step-card.s1 .step-num { color: var(--ocean-foam); }
+  .step-card.s2 .step-num { color: var(--gold); }
+  .step-card.s3 .step-num { color: #7ed56f; }
+
+  .step-card h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #0a3d62;
+  }
+  .formula-box {
+    background: rgba(2,119,189,0.12);
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    color: #0d3b66;
+    line-height: 1.8;
+  }
+  .formula-box .result {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--gold);
+  }
+
+  /* ANSWER BOX */
+  .answer-box {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    padding: 0 1rem;
+  }
+  .answer-card {
+    background: linear-gradient(135deg, rgba(240,180,41,0.22), rgba(255,255,255,0.75));
+    border: 2px solid var(--gold);
+    border-radius: 18px;
+    padding: 1.5rem;
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.6s ease;
+  }
+  .answer-card.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .answer-card .big-num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 5rem);
+    color: var(--gold);
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(240,180,41,0.5);
+  }
+  .answer-card .big-label {
+    font-size: 1rem;
+    color: #0277bd;
+    font-weight: 700;
+    margin-top: 0.2rem;
+  }
+  .answer-card .conclusion {
+    margin-top: 0.8rem;
+    font-size: 0.9rem;
+    color: #0d3b66 !important;
+    line-height: 1.6; /* color_replaced: #c8e6f8;
+    line-height: 1.6;
+  }
+
+  /* PLAY BUTTON */
+  .btn-play {
+    display: block;
+    margin: 0.5rem auto 1rem;
+    background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 0.7rem 2.2rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(91,184,245,0.35);
+    transition: all 0.3s;
+    letter-spacing: 0.5px;
+  }
+  .btn-play:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(91,184,245,0.5);
+  }
+  .btn-play:active { transform: translateY(0); }
+
+
+  .btn-sound {
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    padding: 0.7rem 1.3rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-sound:hover { background: linear-gradient(135deg, #6d28d9, #9333ea); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(124,58,237,0.4); }
+  .btn-sound.muted { background: linear-gradient(135deg, #6b7280, #9ca3af); color: #fff; }
+
+  /* Timer bar */
+  .timer-wrap {
+    max-width: 700px;
+    margin: 0.5rem auto;
+    padding: 0 1rem;
+  }
+  .timer-bar-bg {
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    height: 10px;
+    overflow: hidden;
+  }
+  .timer-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--ocean-foam), var(--gold));
+    border-radius: 20px;
+    transition: width 0.1s linear;
+  }
+  .timer-label {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--ocean-foam);
+    margin-top: 0.3rem;
+    font-weight: 700;
+  }
+
+  /* ── DAYTIME SKY ELEMENTS ── */
+  .sky-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  /* CLOUD */
+  .cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    opacity: 0.88;
+    animation: cloudDrift var(--spd) linear infinite;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+  }
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+  }
+  .cloud::before {
+    width: 55%; height: 140%;
+    top: -40%; left: 15%;
+  }
+  .cloud::after {
+    width: 40%; height: 120%;
+    top: -30%; left: 50%;
+  }
+  @keyframes cloudDrift {
+    0%   { transform: translateX(-220px); }
+    100% { transform: translateX(110vw); }
+  }
+  /* BIRD */
+  .bird {
+    position: absolute;
+    animation: birdFly var(--spd) linear infinite;
+    opacity: 0.75;
+  }
+  .bird svg {
+    animation: birdWing 0.7s ease-in-out infinite alternate;
+    transform-origin: center bottom;
+  }
+  @keyframes birdFly {
+    0%   { transform: translate(-80px, 0px); }
+    20%  { transform: translate(calc(20vw), -15px); }
+    40%  { transform: translate(calc(40vw), 5px); }
+    60%  { transform: translate(calc(60vw), -10px); }
+    80%  { transform: translate(calc(80vw), 3px); }
+    100% { transform: translate(110vw, -5px); }
+  }
+  @keyframes birdWing {
+    0%   { transform: translateY(0px) rotate(0deg); }
+    100% { transform: translateY(-5px) rotate(-12deg); }
+  }
+  /* SUN pulse glow */
+  @keyframes sunPulse {
+    0%,100% { filter: drop-shadow(0 0 18px #FFD700) drop-shadow(0 0 35px #FFA500); }
+    50%      { filter: drop-shadow(0 0 28px #FFD700) drop-shadow(0 0 55px #FFA500); }
+  }
+  .sun-el {
+    position: absolute;
+    animation: sunPulse 3s ease-in-out infinite;
+  }
+
+  .content { position: relative; z-index: 1; }
+
+  /* WAVE animation */
+  @keyframes waveMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Boat path animation */
+  @keyframes boatSail {
+    0% { offset-distance: 0%; }
+    100% { offset-distance: 100%; }
+  }
+
+  .boat-group {
+    position: absolute;
+    transition: left 0.1s linear;
+    bottom: 80px;
+  }
+
+  /* Confetti */
+  .confetti-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    display: none;
+  }
+  .confetti-piece {
+    position: absolute;
+    width: 10px; height: 10px;
+    top: -20px;
+    animation: confettiFall 2.5s ease-in forwards;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  .divider {
+    max-width: 700px;
+    margin: 0.8rem auto;
+    padding: 0 1rem;
+    border: none;
+    border-top: 1px solid rgba(91,184,245,0.15);
+  }
+
+  /* ══════════════════════════════════
+     TTS AUDIO BUTTONS — CANTIK 💎
+  ══════════════════════════════════ */
+  .tts-row {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Base tombol */
+  .btn-tts {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 18px;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.28s cubic-bezier(.34,1.56,.64,1);
+    user-select: none;
+    letter-spacing: 0.2px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  }
+  /* Shimmer efek */
+  .btn-tts::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -60%;
+    width: 40%; height: 200%;
+    background: rgba(255,255,255,0.3);
+    transform: skewX(-20deg);
+    transition: left 0.5s ease;
+  }
+  .btn-tts:hover::after { left: 120%; }
+  .btn-tts:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 7px 20px rgba(0,0,0,0.18);
+  }
+  .btn-tts:active { transform: translateY(0) scale(0.98); }
+
+  /* ── WARNA TIAP TOMBOL TTS ── */
+  .btn-tts.btn-intro {
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px rgba(139,92,246,0.45);
+  }
+  .btn-tts.btn-intro:hover { box-shadow: 0 7px 22px rgba(139,92,246,0.6) !important; }
+
+  .btn-tts.btn-soal {
+    background: linear-gradient(135deg, #0ea5e9, #38bdf8) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px rgba(14,165,233,0.45);
+  }
+  .btn-tts.btn-soal:hover { box-shadow: 0 7px 22px rgba(14,165,233,0.6) !important; }
+
+  .btn-tts.s1-color {
+    background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px rgba(8,145,178,0.45);
+  }
+  .btn-tts.s1-color:hover { box-shadow: 0 7px 22px rgba(6,182,212,0.6) !important; }
+
+  .btn-tts.s2-color {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px rgba(245,158,11,0.45);
+  }
+  .btn-tts.s2-color:hover { box-shadow: 0 7px 22px rgba(245,158,11,0.6) !important; }
+
+  .btn-tts.s3-color {
+    background: linear-gradient(135deg, #16a34a, #4ade80) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px rgba(22,163,74,0.45);
+  }
+  .btn-tts.s3-color:hover { box-shadow: 0 7px 22px rgba(22,163,74,0.6) !important; }
+
+  .btn-tts.outro-color {
+    background: linear-gradient(135deg, #ec4899, #f472b6) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px rgba(236,72,153,0.45);
+  }
+  .btn-tts.outro-color:hover { box-shadow: 0 7px 22px rgba(236,72,153,0.6) !important; }
+
+  /* State SPEAKING */
+  .btn-tts.speaking {
+    animation: pulse-tts 1.2s ease-in-out infinite;
+  }
+  @keyframes pulse-tts {
+    0%,100% { box-shadow: 0 4px 15px rgba(0,0,0,0.2); transform: scale(1); }
+    50%      { box-shadow: 0 6px 28px rgba(0,0,0,0.3); transform: scale(1.04); }
+  }
+
+  /* WAVE bars */
+  .tts-wave {
+    display: none;
+    align-items: center;
+    gap: 2.5px;
+    height: 16px;
+    margin-left: 2px;
+  }
+  .btn-tts.speaking .tts-wave { display: inline-flex; }
+  .tts-wave span {
+    display: block;
+    width: 2.5px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.9);
+    animation: wave-bar 0.7s ease-in-out infinite;
+  }
+  .tts-wave span:nth-child(1){ height:5px;  animation-delay:0s;    }
+  .tts-wave span:nth-child(2){ height:13px; animation-delay:0.1s;  }
+  .tts-wave span:nth-child(3){ height:9px;  animation-delay:0.2s;  }
+  .tts-wave span:nth-child(4){ height:15px; animation-delay:0.12s; }
+  .tts-wave span:nth-child(5){ height:7px;  animation-delay:0.06s; }
+  @keyframes wave-bar {
+    0%,100% { transform: scaleY(1);    opacity: 1;   }
+    50%      { transform: scaleY(0.3); opacity: 0.6; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ☀️ Sky Layer — awan & burung animated -->
+<div class="sky-layer" id="skyLayer">
+  <!-- Awan besar 1 -->
+  <div class="cloud" style="width:160px;height:50px;top:6%;--spd:28s;animation-delay:-5s;"></div>
+  <!-- Awan besar 2 -->
+  <div class="cloud" style="width:120px;height:40px;top:12%;--spd:38s;animation-delay:-14s;"></div>
+  <!-- Awan kecil 1 -->
+  <div class="cloud" style="width:80px;height:28px;top:4%;--spd:22s;animation-delay:-8s;opacity:0.7;"></div>
+  <!-- Awan kecil 2 -->
+  <div class="cloud" style="width:90px;height:30px;top:18%;--spd:32s;animation-delay:-20s;opacity:0.75;"></div>
+  <!-- Awan medium -->
+  <div class="cloud" style="width:130px;height:42px;top:9%;--spd:44s;animation-delay:-30s;"></div>
+
+  <!-- Burung 1 - besar -->
+  <div class="bird" style="top:7%;--spd:18s;animation-delay:-2s;">
+    <svg width="48" height="28" viewBox="0 0 48 28" fill="none">
+      <!-- tubuh -->
+      <ellipse cx="24" cy="16" rx="8" ry="4" fill="#2c3e50"/>
+      <!-- kepala -->
+      <ellipse cx="33" cy="13" rx="4" ry="3.5" fill="#2c3e50"/>
+      <!-- paruh -->
+      <polygon points="37,12 42,13 37,14.5" fill="#e67e22"/>
+      <!-- ekor -->
+      <path d="M16,16 Q10,22 6,18 Q10,16 16,16Z" fill="#2c3e50"/>
+      <!-- sayap kiri (atas) -->
+      <path d="M22,14 Q14,4 4,8 Q12,12 22,14Z" fill="#34495e"/>
+      <!-- sayap kanan (atas) -->
+      <path d="M26,14 Q34,4 44,8 Q36,12 26,14Z" fill="#34495e"/>
+      <!-- highlight sayap -->
+      <path d="M22,14 Q14,6 6,9" stroke="#5d6d7e" stroke-width="0.8" fill="none"/>
+      <path d="M26,14 Q34,6 42,9" stroke="#5d6d7e" stroke-width="0.8" fill="none"/>
+      <!-- mata -->
+      <circle cx="35" cy="12" r="1.2" fill="white"/>
+      <circle cx="35.3" cy="12" r="0.6" fill="#111"/>
+    </svg>
+  </div>
+  <!-- Burung 2 - medium -->
+  <div class="bird" style="top:13%;--spd:24s;animation-delay:-10s;">
+    <svg width="38" height="22" viewBox="0 0 38 22" fill="none">
+      <ellipse cx="19" cy="13" rx="6" ry="3.2" fill="#2c3e50"/>
+      <ellipse cx="26" cy="10.5" rx="3.2" ry="2.8" fill="#2c3e50"/>
+      <polygon points="29,10 33,10.8 29,12" fill="#e67e22"/>
+      <path d="M13,13 Q8,18 5,15 Q8,13 13,13Z" fill="#2c3e50"/>
+      <path d="M17,11 Q11,3 3,6 Q9,9.5 17,11Z" fill="#34495e"/>
+      <path d="M21,11 Q27,3 35,6 Q29,9.5 21,11Z" fill="#34495e"/>
+      <circle cx="27.5" cy="9.8" r="0.9" fill="white"/>
+      <circle cx="27.7" cy="9.8" r="0.45" fill="#111"/>
+    </svg>
+  </div>
+  <!-- Burung 3 - kecil -->
+  <div class="bird" style="top:5%;--spd:20s;animation-delay:-6s;">
+    <svg width="30" height="18" viewBox="0 0 30 18" fill="none">
+      <ellipse cx="15" cy="11" rx="5" ry="2.6" fill="#37474f"/>
+      <ellipse cx="21" cy="8.5" rx="2.6" ry="2.3" fill="#37474f"/>
+      <polygon points="23.5,8 27,8.7 23.5,9.8" fill="#e67e22"/>
+      <path d="M10,11 Q6,15 4,12 Q7,11 10,11Z" fill="#37474f"/>
+      <path d="M13,9 Q8,2 2,5 Q7,8 13,9Z" fill="#455a64"/>
+      <path d="M17,9 Q22,2 28,5 Q23,8 17,9Z" fill="#455a64"/>
+      <circle cx="22" cy="8" r="0.7" fill="white"/>
+      <circle cx="22.2" cy="8" r="0.35" fill="#111"/>
+    </svg>
+  </div>
+  <!-- Burung 4 - medium lambat -->
+  <div class="bird" style="top:19%;--spd:30s;animation-delay:-18s;">
+    <svg width="40" height="24" viewBox="0 0 40 24" fill="none">
+      <ellipse cx="20" cy="14" rx="7" ry="3.5" fill="#263238"/>
+      <ellipse cx="28" cy="11" rx="3.5" ry="3" fill="#263238"/>
+      <polygon points="31.5,10.5 36,11.5 31.5,13" fill="#e67e22"/>
+      <path d="M13,14 Q8,20 5,16 Q9,14 13,14Z" fill="#263238"/>
+      <path d="M18,12 Q11,3 2,6.5 Q9,10 18,12Z" fill="#37474f"/>
+      <path d="M22,12 Q29,3 38,6.5 Q31,10 22,12Z" fill="#37474f"/>
+      <circle cx="29.5" cy="10.5" r="1" fill="white"/>
+      <circle cx="29.7" cy="10.5" r="0.5" fill="#111"/>
+    </svg>
+  </div>
+  <!-- Burung 5 - kecil cepat -->
+  <div class="bird" style="top:10%;--spd:15s;animation-delay:-4s;">
+    <svg width="28" height="17" viewBox="0 0 28 17" fill="none">
+      <ellipse cx="14" cy="10" rx="4.5" ry="2.3" fill="#37474f"/>
+      <ellipse cx="19.5" cy="7.8" rx="2.3" ry="2" fill="#37474f"/>
+      <polygon points="21.8,7.3 25,8 21.8,9" fill="#e67e22"/>
+      <path d="M9.5,10 Q6,14 4,11.5 Q6.5,10 9.5,10Z" fill="#37474f"/>
+      <path d="M12,8.5 Q7,2 2,4.5 Q6,7.5 12,8.5Z" fill="#455a64"/>
+      <path d="M16,8.5 Q21,2 26,4.5 Q22,7.5 16,8.5Z" fill="#455a64"/>
+      <circle cx="20.5" cy="7.3" r="0.65" fill="white"/>
+      <circle cx="20.7" cy="7.3" r="0.33" fill="#111"/>
+    </svg>
+  </div>
+</div>
+
+<div class="content">
+  <!-- HEADER -->
+  <div class="header">
+    <p style="font-size:0.8rem;font-weight:800;color:#0a5f9e;letter-spacing:1px;margin-bottom:0.15rem;">✏️ Fawnia Bachtiar &nbsp;·&nbsp; 2303020017</p>
+    <div class="badge">🧮 Matematika · Skala &amp; Kecepatan</div>
+    <h1>Perjalanan ke<br>Pulau Penyengat ⚓</h1>
+    <p>Tanjungpinang, Kepulauan Riau</p>
+  </div>
+
+  <!-- SOAL -->
+  <div class="soal-card" style="max-width:700px;margin:1rem auto;padding:1.2rem 1.5rem;">
+    <h3>📋 Soal</h3>
+    <p>Seorang wisatawan naik perahu bermotor dari <span>Pelabuhan Sri Bintan Pura, Tanjungpinang</span> menuju <span>Pulau Penyengat</span>. Jarak antara pelabuhan dan Pulau Penyengat pada peta adalah <span>2 cm</span>, skala peta <span>1 : 100.000</span>, dan perahu melaju dengan kecepatan <span>12 km/jam</span>. Berapa menit waktu yang dibutuhkan?</p>
+    <div class="tts-row">
+      <button id="btn_intro" onclick="ttsSpeak('intro', this)" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;border-radius:12px;padding:9px 18px;font-family:Nunito,sans-serif;font-weight:800;font-size:0.85rem;cursor:pointer;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(124,58,237,0.45);transition:all 0.25s;">
+        <span class="ico">🗣️</span> Dengarkan Pengantar
+        <span class="tts-wave"><span></span><span></span><span></span><span></span><span></span></span>
+      </button>
+      &nbsp;
+      <button id="btn_soal" onclick="ttsSpeak('soal', this)" style="background:linear-gradient(135deg,#0284c7,#38bdf8);color:#fff;border:none;border-radius:12px;padding:9px 18px;font-family:Nunito,sans-serif;font-weight:800;font-size:0.85rem;cursor:pointer;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(2,132,199,0.45);transition:all 0.25s;">
+        <span class="ico">🔊</span> Dengarkan Soal
+        <span class="tts-wave"><span></span><span></span><span></span><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- DATA -->
+  <div class="data-grid">
+    <div class="data-item">
+      <div class="label">📏 Jarak di Peta</div>
+      <div class="value">2</div>
+      <div class="unit">cm</div>
+    </div>
+    <div class="data-item">
+      <div class="label">🗺️ Skala Peta</div>
+      <div class="value">1 : 100.000</div>
+      <div class="unit">&nbsp;</div>
+    </div>
+    <div class="data-item">
+      <div class="label">🚤 Kecepatan</div>
+      <div class="value">12</div>
+      <div class="unit">km/jam</div>
+    </div>
+  </div>
+
+  <!-- OCEAN ANIMATION -->
+  <div class="ocean-scene">
+    <svg class="scene-svg" viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#42a8e0"/>
+          <stop offset="100%" stop-color="#87CEEB"/>
+        </linearGradient>
+        <linearGradient id="seaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#29b6f6"/>
+          <stop offset="100%" stop-color="#0277bd"/>
+        </linearGradient>
+        <linearGradient id="islandGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3da35d"/>
+          <stop offset="100%" stop-color="#2d6a4f"/>
+        </linearGradient>
+        <clipPath id="sceneClip">
+          <rect x="0" y="0" width="700" height="220" rx="20"/>
+        </clipPath>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <g clip-path="url(#sceneClip)">
+        <!-- Sky -->
+        <rect width="700" height="220" fill="url(#skyGrad)"/>
+
+        <!-- ☀️ MATAHARI -->
+        <g id="sunGroup">
+          <!-- Sinar matahari -->
+          <g id="sunRays" transform="translate(90,45)">
+            <line x1="0" y1="-38" x2="0" y2="-28" stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+            <line x1="0" y1="28"  x2="0" y2="38"  stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+            <line x1="-38" y1="0" x2="-28" y2="0" stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+            <line x1="28"  y1="0" x2="38"  y2="0" stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+            <line x1="-27" y1="-27" x2="-20" y2="-20" stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+            <line x1="20"  y1="-20" x2="27" y2="-27" stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+            <line x1="-27" y1="27"  x2="-20" y2="20" stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+            <line x1="20"  y1="20"  x2="27" y2="27"  stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+          </g>
+          <!-- Glow -->
+          <circle cx="90" cy="45" r="26" fill="#FFF176" opacity="0.35"/>
+          <!-- Bola matahari -->
+          <circle cx="90" cy="45" r="20" fill="#FFD600" filter="url(#glow)"/>
+          <circle cx="90" cy="45" r="16" fill="#FFEE58"/>
+          <!-- Highlight -->
+          <circle cx="84" cy="40" r="5" fill="white" opacity="0.18"/>
+        </g>
+
+        <!-- ☁️ AWAN di SVG (statis, dekoratif) -->
+        <!-- Awan 1 -->
+        <g id="svgCloud1" opacity="0.92">
+          <ellipse cx="260" cy="35" rx="42" ry="16" fill="white"/>
+          <ellipse cx="240" cy="30" rx="24" ry="18" fill="white"/>
+          <ellipse cx="272" cy="28" rx="28" ry="20" fill="white"/>
+          <ellipse cx="295" cy="33" rx="20" ry="14" fill="white"/>
+        </g>
+        <!-- Awan 2 -->
+        <g id="svgCloud2" opacity="0.85">
+          <ellipse cx="490" cy="28" rx="35" ry="13" fill="white"/>
+          <ellipse cx="472" cy="24" rx="20" ry="16" fill="white"/>
+          <ellipse cx="500" cy="22" rx="24" ry="17" fill="white"/>
+          <ellipse cx="520" cy="27" rx="16" ry="12" fill="white"/>
+        </g>
+        <!-- Awan 3 kecil -->
+        <g id="svgCloud3" opacity="0.75">
+          <ellipse cx="390" cy="55" rx="22" ry="9" fill="white"/>
+          <ellipse cx="378" cy="51" rx="14" ry="11" fill="white"/>
+          <ellipse cx="398" cy="49" rx="16" ry="12" fill="white"/>
+        </g>
+
+        <!-- 🐦 BURUNG di SVG — bentuk realistis -->
+        <g id="svgBird1">
+          <ellipse cx="350" cy="44" rx="7" ry="3" fill="#2c3e50"/>
+          <ellipse cx="357" cy="42" rx="3" ry="2.5" fill="#2c3e50"/>
+          <path d="M343,44 Q338,49 335,46 Q339,44 343,44Z" fill="#2c3e50"/>
+          <path d="M348,42 Q341,35 333,37.5 Q340,40.5 348,42Z" fill="#37474f"/>
+          <path d="M352,42 Q359,35 367,37.5 Q360,40.5 352,42Z" fill="#37474f"/>
+          <polygon points="360,41.5 364,42.2 360,43.2" fill="#e67e22"/>
+          <circle cx="358" cy="41.5" r="0.9" fill="white"/><circle cx="358.2" cy="41.5" r="0.45" fill="#111"/>
+        </g>
+        <g id="svgBird2">
+          <ellipse cx="230" cy="38" rx="6" ry="2.6" fill="#37474f"/>
+          <ellipse cx="236" cy="36.2" rx="2.6" ry="2.2" fill="#37474f"/>
+          <path d="M224,38 Q220,42 218,39.5 Q221,38 224,38Z" fill="#37474f"/>
+          <path d="M228,36.5 Q222,30 215,32 Q221,35 228,36.5Z" fill="#455a64"/>
+          <path d="M232,36.5 Q238,30 245,32 Q239,35 232,36.5Z" fill="#455a64"/>
+          <polygon points="238.5,35.8 242,36.4 238.5,37.3" fill="#e67e22"/>
+          <circle cx="237" cy="35.5" r="0.75" fill="white"/><circle cx="237.2" cy="35.5" r="0.38" fill="#111"/>
+        </g>
+        <g id="svgBird3">
+          <ellipse cx="470" cy="52" rx="5.5" ry="2.4" fill="#263238"/>
+          <ellipse cx="476" cy="50.2" rx="2.4" ry="2" fill="#263238"/>
+          <path d="M464.5,52 Q461,56 459,53.5 Q462,52 464.5,52Z" fill="#263238"/>
+          <path d="M468,50.5 Q463,44 457,46 Q462,49 468,50.5Z" fill="#37474f"/>
+          <path d="M472,50.5 Q477,44 483,46 Q478,49 472,50.5Z" fill="#37474f"/>
+          <polygon points="478.5,50 482,50.6 478.5,51.5" fill="#e67e22"/>
+          <circle cx="477" cy="49.5" r="0.7" fill="white"/><circle cx="477.2" cy="49.5" r="0.35" fill="#111"/>
+        </g>
+
+        <!-- Sea background -->
+        <rect x="0" y="120" width="700" height="100" fill="url(#seaGrad)"/>
+
+        <!-- Wave layers -->
+        <g id="waveGroup1">
+          <path d="M0,130 Q35,122 70,130 Q105,138 140,130 Q175,122 210,130 Q245,138 280,130 Q315,122 350,130 Q385,138 420,130 Q455,122 490,130 Q525,138 560,130 Q595,122 630,130 Q665,138 700,130 L700,220 L0,220 Z" fill="#0288d1" opacity="0.45"/>
+          <path d="M700,130 Q665,122 630,130 Q595,138 560,130 Q525,122 490,130 Q455,138 420,130 Q385,122 350,130 Q315,138 280,130 Q245,122 210,130 Q175,138 140,130 Q105,122 70,130 Q35,138 0,130 L0,220 L700,220 Z" fill="#0288d1" opacity="0.25"/>
+        </g>
+
+        <!-- Sea shimmer -->
+        <rect x="0" y="120" width="700" height="2" fill="white" opacity="0.1"/>
+
+        <!-- PELABUHAN (left) -->
+        <!-- Pier -->
+        <rect x="20" y="110" width="70" height="20" rx="4" fill="#5d4037"/>
+        <rect x="30" y="95" width="8" height="15" fill="#795548"/>
+        <rect x="50" y="95" width="8" height="15" fill="#795548"/>
+        <rect x="70" y="95" width="8" height="15" fill="#795548"/>
+        <!-- Building -->
+        <rect x="5" y="75" width="55" height="35" rx="5" fill="#1a3a5c"/>
+        <rect x="10" y="68" width="45" height="10" rx="3" fill="#1e4976"/>
+        <!-- Flag -->
+        <line x1="57" y1="45" x2="57" y2="75" stroke="#aaa" stroke-width="1.5"/>
+        <polygon points="57,45 70,52 57,59" fill="#e53935"/>
+        <!-- Windows -->
+        <rect x="12" y="80" width="10" height="10" rx="2" fill="#64b5f6" opacity="0.7"/>
+        <rect x="28" y="80" width="10" height="10" rx="2" fill="#64b5f6" opacity="0.7"/>
+        <rect x="44" y="80" width="10" height="10" rx="2" fill="#64b5f6" opacity="0.5"/>
+        <!-- Label -->
+        <text x="35" y="145" text-anchor="middle" fill="#90caf9" font-size="7.5" font-family="Nunito" font-weight="700">Sri Bintan Pura</text>
+        <text x="35" y="155" text-anchor="middle" fill="#64b5f6" font-size="6.5" font-family="Nunito">Tanjungpinang</text>
+
+        <!-- Distance line (dashed) -->
+        <line id="distLine" x1="85" y1="135" x2="595" y2="135" stroke="#f0b429" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.4"/>
+        <text x="340" y="127" text-anchor="middle" fill="#f0b429" font-size="9" font-family="Nunito" font-weight="700" opacity="0.8">2 km (jarak sebenarnya)</text>
+
+        <!-- PULAU PENYENGAT (right) -->
+        <!-- Island base -->
+        <ellipse cx="625" cy="148" rx="60" ry="22" fill="#2d8a4e"/>
+        <ellipse cx="625" cy="145" rx="55" ry="18" fill="url(#islandGrad)"/>
+        <!-- Trees -->
+        <line x1="610" y1="148" x2="610" y2="120" stroke="#5d4037" stroke-width="2"/>
+        <ellipse cx="610" cy="115" rx="9" ry="11" fill="#388e3c"/>
+        <line x1="628" y1="148" x2="628" y2="112" stroke="#5d4037" stroke-width="2"/>
+        <ellipse cx="628" cy="107" rx="10" ry="12" fill="#2e7d32"/>
+        <line x1="642" y1="145" x2="642" y2="118" stroke="#5d4037" stroke-width="2"/>
+        <ellipse cx="642" cy="113" rx="8" ry="10" fill="#43a047"/>
+        <!-- Masjid Penyengat icon -->
+        <rect x="615" y="128" width="22" height="16" rx="2" fill="#c8a951"/>
+        <ellipse cx="626" cy="128" rx="7" ry="5" fill="#e8c97a"/>
+        <line x1="626" y1="115" x2="626" y2="124" stroke="#c8a951" stroke-width="1.5"/>
+        <circle cx="626" cy="114" r="2" fill="#f0b429"/>
+        <!-- Label -->
+        <text x="625" y="178" text-anchor="middle" fill="#a5d6a7" font-size="8" font-family="Nunito" font-weight="700">Pulau Penyengat</text>
+
+        <!-- BOAT - animated -->
+        <g id="boatAnim">
+          <!-- Hull -->
+          <ellipse cx="0" cy="4" rx="22" ry="7" fill="#e53935"/>
+          <rect x="-18" y="-2" width="36" height="6" rx="3" fill="#ef9a9a"/>
+          <!-- Cabin -->
+          <rect x="-7" y="-12" width="16" height="10" rx="3" fill="#fff"/>
+          <rect x="-5" y="-14" width="12" height="5" rx="2" fill="#1a237e"/>
+          <!-- Chimney smoke -->
+          <circle cx="5" cy="-18" r="3" fill="#bdbdbd" opacity="0.5" id="smoke1"/>
+          <circle cx="6" cy="-24" r="2.5" fill="#bdbdbd" opacity="0.3" id="smoke2"/>
+          <!-- Windows -->
+          <rect x="-5" y="-11" width="5" height="5" rx="1" fill="#64b5f6" opacity="0.8"/>
+          <rect x="2" y="-11" width="5" height="5" rx="1" fill="#64b5f6" opacity="0.8"/>
+          <!-- Wake -->
+          <path d="-20,6 Q-30,10 -40,6" stroke="white" stroke-width="1.5" fill="none" opacity="0.4"/>
+        </g>
+
+        <!-- Progress label -->
+        <text id="progressText" x="340" y="205" text-anchor="middle" fill="#64b5f6" font-size="9" font-family="Nunito" font-weight="700" opacity="0">Sedang berlayar...</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- TIMER BAR -->
+  <div class="timer-wrap">
+    <div class="timer-bar-bg">
+      <div class="timer-bar-fill" id="timerBar"></div>
+    </div>
+    <div class="timer-label" id="timerLabel">Tekan tombol untuk memulai simulasi 🚢</div>
+  </div>
+
+  <!-- PLAY BUTTON + SOUND TOGGLE -->
+  <div style="display:flex;justify-content:center;gap:0.7rem;align-items:center;flex-wrap:wrap;">
+    <button id="playBtn" onclick="startAnimation()" style="background:linear-gradient(135deg,#0369a1,#0ea5e9);color:#fff;border:none;border-radius:12px;padding:0.7rem 2rem;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(3,105,161,0.4);transition:all 0.3s;display:block;margin:0.5rem auto 1rem;">▶ Mulai Simulasi Perjalanan</button>
+    <button id="soundBtn" onclick="toggleSound()" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;border-radius:12px;padding:0.7rem 1.3rem;font-family:Nunito,sans-serif;font-weight:800;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 14px rgba(124,58,237,0.4);transition:all 0.3s;">🔊 Suara ON</button>
+  </div>
+
+  <hr class="divider">
+
+  <!-- LANGKAH PENYELESAIAN -->
+  <div class="steps-section">
+    <div class="steps-title">📐 Langkah Penyelesaian</div>
+
+    <div class="step-card s1" id="step1">
+      <div class="step-num">Langkah 1</div>
+      <h4>🗺️ Mencari Jarak Sebenarnya</h4>
+      <div class="formula-box">
+        <div>Rumus: <strong>Jarak Sebenarnya = Jarak Peta × Penyebut Skala</strong></div>
+        <div>= 2 cm × 100.000</div>
+        <div>= 200.000 cm</div>
+        <div class="result">= 2 km ✓</div>
+      </div>
+      <div class="tts-row">
+        <button id="btn_l1" onclick="ttsSpeak('l1', this)" style="background:linear-gradient(135deg,#0891b2,#22d3ee);color:#fff;border:none;border-radius:12px;padding:9px 18px;font-family:Nunito,sans-serif;font-weight:800;font-size:0.85rem;cursor:pointer;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(8,145,178,0.45);transition:all 0.25s;">
+          <span class="ico">🔊</span> Dengarkan Penjelasan
+          <span class="tts-wave"><span></span><span></span><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="step-card s2" id="step2">
+      <div class="step-num">Langkah 2</div>
+      <h4>⏱️ Mencari Waktu Tempuh</h4>
+      <div class="formula-box">
+        <div>Rumus: <strong>Waktu = Jarak ÷ Kecepatan</strong></div>
+        <div>= 2 km ÷ 12 km/jam</div>
+        <div class="result">= ¹⁄₆ jam</div>
+      </div>
+      <div class="tts-row">
+        <button id="btn_l2" onclick="ttsSpeak('l2', this)" style="background:linear-gradient(135deg,#d97706,#fbbf24);color:#fff;border:none;border-radius:12px;padding:9px 18px;font-family:Nunito,sans-serif;font-weight:800;font-size:0.85rem;cursor:pointer;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(217,119,6,0.45);transition:all 0.25s;">
+          <span class="ico">🔊</span> Dengarkan Penjelasan
+          <span class="tts-wave"><span></span><span></span><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="step-card s3" id="step3">
+      <div class="step-num">Langkah 3</div>
+      <h4>🔄 Konversi ke Menit</h4>
+      <div class="formula-box">
+        <div>1 jam = 60 menit</div>
+        <div>= ¹⁄₆ × 60 menit</div>
+        <div class="result">= 10 menit ✅</div>
+      </div>
+      <div class="tts-row">
+        <button id="btn_l3" onclick="ttsSpeak('l3', this)" style="background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;border:none;border-radius:12px;padding:9px 18px;font-family:Nunito,sans-serif;font-weight:800;font-size:0.85rem;cursor:pointer;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(22,163,74,0.45);transition:all 0.25s;">
+          <span class="ico">🔊</span> Dengarkan Penjelasan
+          <span class="tts-wave"><span></span><span></span><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAWABAN AKHIR -->
+  <div class="answer-box">
+    <div class="answer-card" id="answerCard">
+      <div style="font-size:0.85rem;color:var(--ocean-foam);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">🏆 Jawaban</div>
+      <div class="big-num">10</div>
+      <div class="big-label">menit</div>
+      <div class="conclusion">
+        Perahu bermotor membutuhkan waktu <strong>10 menit</strong> untuk menempuh jarak <strong>2 km</strong><br>
+        dari Pelabuhan Sri Bintan Pura ke Pulau Penyengat<br>
+        dengan kecepatan <strong>12 km/jam</strong>.
+      </div>
+      <div class="tts-row" style="justify-content:center;margin-top:16px;">
+        <button id="btn_outro" onclick="ttsSpeak('outro', this)" style="background:linear-gradient(135deg,#db2777,#f472b6);color:#fff;border:none;border-radius:12px;padding:10px 22px;font-family:Nunito,sans-serif;font-weight:800;font-size:0.88rem;cursor:pointer;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 16px rgba(219,39,119,0.45);transition:all 0.25s;">
+          <span class="ico">👋</span> Dengarkan Penutup
+          <span class="tts-wave" style="color:#ff9de2"><span></span><span></span><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Confetti -->
+<div class="confetti-container" id="confetti"></div>
+
+<script>
+// ===================== AUDIO ENGINE =====================
+let audioCtx = null;
+let engineNodes = [];
+let engineRunning = false;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+// 🌊 Ocean waves — looping noise filtered to low rumble
+function startOceanSound() {
+  const ctx = getAudioCtx();
+  const bufferSize = ctx.sampleRate * 3;
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+  source.loop = true;
+
+  const lp = ctx.createBiquadFilter();
+  lp.type = 'lowpass';
+  lp.frequency.value = 400;
+  lp.Q.value = 0.8;
+
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0, ctx.currentTime);
+  gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 2);
+
+  source.connect(lp);
+  lp.connect(gain);
+  gain.connect(ctx.destination);
+  source.start();
+  engineNodes.push({ source, gain });
+  return { source, gain };
+}
+
+// 🚤 Boat engine — low rumbling oscillator
+function startEngineSound() {
+  const ctx = getAudioCtx();
+
+  // Base engine hum
+  const osc1 = ctx.createOscillator();
+  osc1.type = 'sawtooth';
+  osc1.frequency.value = 55;
+
+  const osc2 = ctx.createOscillator();
+  osc2.type = 'square';
+  osc2.frequency.value = 110;
+
+  // LFO for chug chug effect
+  const lfo = ctx.createOscillator();
+  lfo.frequency.value = 6;
+  const lfoGain = ctx.createGain();
+  lfoGain.gain.value = 15;
+  lfo.connect(lfoGain);
+  lfoGain.connect(osc1.frequency);
+
+  const distortion = ctx.createWaveShaper();
+  function makeDistortionCurve(amount) {
+    const n = 256, curve = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const x = (i * 2) / n - 1;
+      curve[i] = ((Math.PI + amount) * x) / (Math.PI + amount * Math.abs(x));
+    }
+    return curve;
+  }
+  distortion.curve = makeDistortionCurve(80);
+
+  const lp = ctx.createBiquadFilter();
+  lp.type = 'lowpass';
+  lp.frequency.value = 300;
+
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0, ctx.currentTime);
+  gain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 1.5);
+
+  osc1.connect(distortion);
+  osc2.connect(distortion);
+  distortion.connect(lp);
+  lp.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc1.start(); osc2.start(); lfo.start();
+  engineNodes.push({ source: osc1, gain }, { source: osc2, gain }, { source: lfo, gain: lfoGain });
+  engineRunning = true;
+  return gain;
+}
+
+// 🔔 Step reveal ding
+function playDing(freq = 880, duration = 0.4) {
+  const ctx = getAudioCtx();
+  const osc = ctx.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.25, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + duration);
+}
+
+// 🎺 Arrival fanfare
+function playFanfare() {
+  const ctx = getAudioCtx();
+  const notes = [523, 659, 784, 1047]; // C E G C
+  notes.forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    osc.type = 'triangle';
+    osc.frequency.value = freq;
+    const gain = ctx.createGain();
+    const t = ctx.currentTime + i * 0.18;
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.3, t + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.6);
+  });
+}
+
+// 🌊 Horn beep on departure
+function playHorn() {
+  const ctx = getAudioCtx();
+  const osc = ctx.createOscillator();
+  osc.type = 'sawtooth';
+  osc.frequency.value = 180;
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.3, ctx.currentTime);
+  gain.gain.setValueAtTime(0.3, ctx.currentTime + 0.5);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.9);
+  const lp = ctx.createBiquadFilter();
+  lp.type = 'lowpass';
+  lp.frequency.value = 600;
+  osc.connect(lp);
+  lp.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 1);
+}
+
+function stopAllEngine() {
+  const ctx = audioCtx;
+  if (!ctx) return;
+  engineNodes.forEach(({ source, gain }) => {
+    try {
+      if (gain) {
+        gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5);
+      }
+      setTimeout(() => { try { source.stop(); } catch(e){} }, 2000);
+    } catch(e) {}
+  });
+  engineNodes = [];
+  engineRunning = false;
+}
+
+// Volume toggle button state
+let soundOn = true;
+let oceanNode = null, engineGain = null;
+
+// ===================== END AUDIO =====================
+
+// ☀️ Animasi matahari berputar + awan SVG melayang
+(function() {
+  // Rotasi sinar matahari
+  let sunAngle = 0;
+  function rotateSun() {
+    sunAngle += 0.4;
+    const rays = document.getElementById('sunRays');
+    if (rays) rays.setAttribute('transform', `translate(90,45) rotate(${sunAngle})`);
+    requestAnimationFrame(rotateSun);
+  }
+  rotateSun();
+
+  // Animasi awan SVG dalam scene (melayang kiri-kanan)
+  let c1x = 0, c2x = 0, c3x = 0;
+  function moveSVGClouds() {
+    c1x = (c1x + 0.18) % 760;
+    c2x = (c2x + 0.12) % 760;
+    c3x = (c3x + 0.22) % 760;
+
+    const cl1 = document.getElementById('svgCloud1');
+    const cl2 = document.getElementById('svgCloud2');
+    const cl3 = document.getElementById('svgCloud3');
+    if (cl1) cl1.setAttribute('transform', `translate(${c1x - (c1x > 500 ? 700 : 0)}, 0)`);
+    if (cl2) cl2.setAttribute('transform', `translate(${c2x - (c2x > 550 ? 700 : 0)}, 0)`);
+    if (cl3) cl3.setAttribute('transform', `translate(${c3x - (c3x > 400 ? 700 : 0)}, 0)`);
+
+    // Animasi burung SVG — kepak-kepak
+    const t = Date.now() / 400;
+    const b1 = document.getElementById('svgBird1');
+    const b2 = document.getElementById('svgBird2');
+    const b3 = document.getElementById('svgBird3');
+    if (b1) b1.setAttribute('transform', `translate(${(Date.now()/30)%800 - 100}, ${Math.sin(t)*3})`);
+    if (b2) b2.setAttribute('transform', `translate(${(Date.now()/22)%800 - 50}, ${Math.sin(t+1)*4})`);
+    if (b3) b3.setAttribute('transform', `translate(${(Date.now()/18)%800 - 80}, ${Math.sin(t+2)*3})`);
+
+    requestAnimationFrame(moveSVGClouds);
+  }
+  moveSVGClouds();
+})();
+
+// Boat animation
+const boat = document.getElementById('boatAnim');
+const timerBar = document.getElementById('timerBar');
+const timerLabel = document.getElementById('timerLabel');
+const progressText = document.getElementById('progressText');
+const playBtn = document.getElementById('playBtn');
+
+// Initial boat position
+let boatX = 90;
+const targetX = 570;
+const startX = 90;
+
+// SVG coordinate system
+boat.setAttribute('transform', `translate(${startX}, 131)`);
+
+function startAnimation() {
+  playBtn.disabled = true;
+  playBtn.textContent = '🚢 Berlayar...';
+
+  // 🔊 START SOUNDS
+  if (soundOn) {
+    getAudioCtx();
+    playHorn();
+    setTimeout(() => {
+      oceanNode = startOceanSound();
+      engineGain = startEngineSound();
+    }, 400);
+  }
+
+  // Show steps with delay + ding sounds
+  setTimeout(() => {
+    document.getElementById('step1').classList.add('visible');
+    if (soundOn) playDing(660, 0.5);
+  }, 500);
+  setTimeout(() => {
+    document.getElementById('step2').classList.add('visible');
+    if (soundOn) playDing(770, 0.5);
+  }, 3500);
+  setTimeout(() => {
+    document.getElementById('step3').classList.add('visible');
+    if (soundOn) playDing(880, 0.5);
+  }, 6500);
+  setTimeout(() => {
+    document.getElementById('answerCard').classList.add('visible');
+    launchConfetti();
+    if (soundOn) { stopAllEngine(); setTimeout(playFanfare, 300); }
+  }, 9000);
+
+  // Animate boat
+  const duration = 9000; // ms
+  const start = performance.now();
+
+  // Show progress text
+  progressText.setAttribute('opacity', '1');
+
+  function animate(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+
+    // Ease in-out
+    const eased = progress < 0.5
+      ? 2 * progress * progress
+      : -1 + (4 - 2 * progress) * progress;
+
+    const currentX = startX + (targetX - startX) * eased;
+    
+    // Boat bob
+    const bob = Math.sin(elapsed / 300) * 2;
+    boat.setAttribute('transform', `translate(${currentX}, ${131 + bob})`);
+
+    // Timer bar
+    timerBar.style.width = (progress * 100) + '%';
+
+    // Timer label
+    const seconds = (progress * 10 * 60).toFixed(0);
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    timerLabel.textContent = `Waktu berlayar: ${mins} menit ${secs} detik (simulasi 10 menit)`;
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      timerLabel.textContent = '✅ Tiba di Pulau Penyengat! Total waktu: 10 menit';
+      progressText.textContent = '⚓ Sampai di Pulau Penyengat!';
+      playBtn.disabled = false;
+      playBtn.textContent = '🔄 Ulangi Simulasi';
+      playBtn.onclick = () => location.reload();
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+// Confetti
+function launchConfetti() {
+  const container = document.getElementById('confetti');
+  container.style.display = 'block';
+  const colors = ['#f0b429','#5bb8f5','#7ed56f','#ff6b6b','#fff','#64b5f6'];
+  for (let i = 0; i < 80; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = (Math.random() * 1.5) + 's';
+    p.style.animationDuration = (1.5 + Math.random()) + 's';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+    p.style.transform = `rotate(${Math.random()*360}deg)`;
+    p.style.width = (6 + Math.random() * 8) + 'px';
+    p.style.height = (6 + Math.random() * 8) + 'px';
+    container.appendChild(p);
+  }
+  setTimeout(() => { container.style.display = 'none'; container.innerHTML = ''; }, 3000);
+}
+
+
+function toggleSound() {
+  soundOn = !soundOn;
+  const btn = document.getElementById('soundBtn');
+  if (soundOn) {
+    btn.textContent = '🔊 Suara ON';
+    btn.style.background = 'linear-gradient(135deg,#7c3aed,#a855f7)';
+  } else {
+    btn.textContent = '🔇 Suara OFF';
+    btn.style.background = 'linear-gradient(135deg,#6b7280,#9ca3af)';
+    stopAllEngine();
+  }
+}
+
+// Show all steps on load (for reference) - hide initially  
+document.getElementById('step1').style.transition = 'all 0.5s ease 0s';
+document.getElementById('step2').style.transition = 'all 0.5s ease 0s';
+document.getElementById('step3').style.transition = 'all 0.5s ease 0s';
+
+// ═══════════════════════════════════════════
+// TTS ENGINE — Web Speech API
+// ═══════════════════════════════════════════
+const TTS_TEXTS = {
+  intro: "Ayo kita selesaikan masalah berikut ini bersama Miss Fawnia!",
+  soal:  "Seorang wisatawan naik perahu bermotor dari Pelabuhan Sri Bintan Pura, Tanjungpinang menuju Pulau Penyengat. Jarak antara pelabuhan dan Pulau Penyengat pada peta adalah 2 sentimeter, skala peta 1 banding 100.000, dan perahu melaju dengan kecepatan 12 kilometer per jam. Berapa menit waktu yang dibutuhkan?",
+  l1:    "Langkah pertama adalah mencari jarak sebenarnya menggunakan skala peta. Rumusnya: Jarak Sebenarnya sama dengan Jarak di Peta dikali Penyebut Skala. Jarak di peta adalah 2 sentimeter, dan penyebut skalanya adalah 100.000. Jadi, 2 dikali 100.000 sama dengan 200.000 sentimeter. Jika kita ubah ke kilometer, hasilnya adalah 2 kilometer. Jadi jarak sebenarnya dari pelabuhan ke Pulau Penyengat adalah 2 kilometer.",
+  l2:    "Langkah kedua adalah mencari waktu tempuh menggunakan rumus kecepatan. Rumusnya: Waktu sama dengan Jarak dibagi Kecepatan. Jarak sebenarnya adalah 2 kilometer, dan kecepatan perahu adalah 12 kilometer per jam. Maka 2 dibagi 12 sama dengan satu per enam jam. Jadi waktu tempuhnya adalah satu per enam jam.",
+  l3:    "Langkah ketiga adalah mengubah satuan dari jam ke menit. Karena 1 jam sama dengan 60 menit, maka seperenam dikali 60 sama dengan 10 menit. Jadi, waktu yang dibutuhkan perahu bermotor untuk sampai ke Pulau Penyengat adalah 10 menit. Kesimpulan: Dengan jarak sebenarnya 2 kilometer dan kecepatan 12 kilometer per jam, perahu hanya membutuhkan 10 menit untuk menyelesaikan perjalanan. Hebat!",
+  outro: "Kita sudah menyelesaikan pembahasan soal hari ini. Sampai jumpa lagi di soal-soal menarik berikutnya bersama Miss Fawnia... babay!"
+};
+
+let _ttsActive = null;   // currently speaking key
+let _ttsBtn    = null;   // currently active button
+let _ttsUtt    = null;
+
+function ttsSpeak(key, btn) {
+  // Toggle: klik tombol yang sedang bicara → stop
+  if (_ttsActive === key && window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    _resetTtsBtn();
+    return;
+  }
+
+  // Stop suara sebelumnya
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    _resetTtsBtn();
+  }
+
+  // Pilih suara
+  const voices = window.speechSynthesis.getVoices();
+  const idVoice = voices.find(v => v.lang === 'id-ID')
+                || voices.find(v => v.lang.startsWith('id'))
+                || null;
+
+  _ttsUtt = new SpeechSynthesisUtterance(TTS_TEXTS[key]);
+  _ttsUtt.lang   = 'id-ID';
+  _ttsUtt.rate   = 0.9;
+  _ttsUtt.pitch  = 1.05;
+  _ttsUtt.volume = 1;
+  if (idVoice) _ttsUtt.voice = idVoice;
+
+  _ttsActive = key;
+  _ttsBtn    = btn;
+
+  _ttsUtt.onstart = () => {
+    btn.querySelector('.ico').textContent = '⏹';
+    btn.style.animation = 'pulse-tts 1.2s ease-in-out infinite';
+    btn.style.transform = 'scale(1.04)';
+  };
+  _ttsUtt.onend = _ttsUtt.onerror = () => {
+    _resetTtsBtn();
+  };
+
+  window.speechSynthesis.speak(_ttsUtt);
+}
+
+function _resetTtsBtn() {
+  if (_ttsBtn) {
+    const ico = _ttsBtn.querySelector('.ico');
+    if (ico) ico.textContent = (_ttsActive === 'intro') ? '🗣️' : (_ttsActive === 'outro' ? '👋' : '🔊');
+    // Hapus animasi pulse
+    _ttsBtn.style.animation = '';
+    _ttsBtn.style.transform = '';
+  }
+  _ttsActive = null;
+  _ttsBtn    = null;
+}
+
+// Preload voices
+if ('speechSynthesis' in window) {
+  speechSynthesis.getVoices();
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+}
+// ═══════════════════════════════════════════
+// END TTS ENGINE
+// ═══════════════════════════════════════════
+
+</script>
+</body>
+</html>
